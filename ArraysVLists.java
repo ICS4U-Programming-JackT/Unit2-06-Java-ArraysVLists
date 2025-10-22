@@ -1,19 +1,17 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collections; // Used for sorting the ArrayList
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Program that reads integers from a file, calculates and displays 
+ * Program that reads integers from a file, calculates and displays
  * the mean and median of the list, and terminates upon encountering
  * a non-integer value.
  *
  * @author Jack
  * @version 1.0
- * @since 2025-10-21
- */
+ * @since 2025-10-21 */
 public final class ArraysVLists {
 
     /** Private constructor to prevent instantiation. */
@@ -21,7 +19,12 @@ public final class ArraysVLists {
         throw new IllegalStateException("Utility Class");
     }
 
-    public static float getMean(int[] numbers) {
+    /**
+     * Main entry point.
+     * @param numbers array containing numbers
+     * @return mean
+     */
+    public static float getMean(final int[] numbers) {
         // Calculate Mean
         long sum = 0;
         for (int num : numbers) {
@@ -32,10 +35,15 @@ public final class ArraysVLists {
         return mean;
     }
 
-    public static float getMedian(int[] numbers) {
+    /**
+     * Main entry point.
+     * @param numbers array containing numbers
+     * @return median
+     */
+    public static float getMedian(final int[] numbers) {
         // Sort the list for Median calculation
         Arrays.sort(numbers);
-        
+
         // Calculate Median
         float median;
         int size = numbers.length;
@@ -78,10 +86,11 @@ public final class ArraysVLists {
                 String line = fileScanner.nextLine();
                 try {
                     // Get line as an int and add to arraylist
-                    int lineInt = Integer.parseInt(line.trim()); // Trim to handle potential whitespace
+                    int lineInt = Integer.parseInt(line);
                     numbers.add(lineInt);
                 } catch (NumberFormatException error) {
-                    // Clear numbers list and break to indicate error and termination
+                    // Clear numbers list and break
+                    // to indicate error and termination
                     numbers.clear();
                     break; // Terminate reading the file
                 }
@@ -97,26 +106,31 @@ public final class ArraysVLists {
             float median = getMedian(numbersAsArray);
 
             if (numbersAsArray.length > 0) {
-                
-
                 // Display Mean and Median
-                System.out.println("\nResults for input" + fileNum + ".txt");
+                System.out.println("\nResults for input"
+                + fileNum + ".txt");
                 System.out.printf("Mean: %.2f%n", mean);
                 System.out.printf("Median: %.2f%n", median);
-                System.out.println("Total numbers read: " + numbersAsArray.length);
+                System.out.println("Total numbers read: "
+                + numbersAsArray.length);
             } else {
-                // This block is executed if numbers.clear() was called (non-int found)
-                // or if the file was empty (and thus numbers.size() is 0).
+                // We check if the file exists or
+                // if the file is empty and tell user
                 if (file.exists() && file.length() == 0) {
                      System.out.println("Error: The file is empty.");
                 } else {
-                    System.out.println("\nError: Reading terminated! Your file contains a non-integer value and cannot be processed further.");
+                    System.out.println("\nError: Reading terminated! Your file "
+                    + "contains a non-integer "
+                    + "value and cannot be processed further.");
                 }
             }
 
             fileScanner.close();
         } catch (FileNotFoundException error) {
-            System.out.println("\nError: The file input" + fileNum + ".txt was not found. Please ensure it exists in the same directory.");
+            // File wasn't found
+            System.out.println("\nError: The file input" + fileNum
+            + ".txt was not found."
+            + " Please ensure it exists in the same directory.");
         } finally {
             fileNumberScanner.close();
         }
